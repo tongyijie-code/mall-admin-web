@@ -53,17 +53,16 @@
                 this.$refs.loginFormRef.resetFields();
             },
             login() {
-                this.$refs.loginFormRef.validate(async (valid) => {
+                this.$refs.loginFormRef.validate((valid) => {
                     //valid是是否满足elementUI的规则条件，满足返回true，进行数据请求 不满足返回
                     if (!valid) return
-                    // const { data: res } = await this.$http.post('login',this.loginForm)
-                    // console.log(res)
+
                     login(this.loginForm).then(res => {
-                        console.log(res)
+                        const { data } = res
                         //根据客户端的返回信息，用element-ui的message组件，在界面进行提示
-                        this.$message(res.meta.msg)
-                        if (res.meta.status === 200) {
-                            window.sessionStorage.setItem('token', res.data.token)
+                        this.$message(data.meta.msg)
+                        if (data.meta.status === 200) {
+                            window.sessionStorage.setItem('token', data.data.token)
                             this.$router.push('/home')
                         }
                     })

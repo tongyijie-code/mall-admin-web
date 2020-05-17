@@ -14,7 +14,15 @@ Vue.use(VueRouter)
     },
     {
       path: '/home',
-      component: () => import('@/views/home/Home')
+      component: () => import('@/views/home/Home'),
+
+      children: [
+        { path: '/', redirect: '/welcome'},
+        {path: '/welcome', component: () => import('@/views/home/children/Welcome')},
+        {path: '/users', component: () => import('@/components/user/UserList')},
+        {path: '/roles', component: () => import('@/components/roles/Roles')},
+        {path: '/rights', component: () => import('@/components/rights/Rights')},
+      ]
     },
 ]
 

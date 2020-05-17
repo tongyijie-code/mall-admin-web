@@ -1,18 +1,31 @@
 import axios from 'axios'
+import setting from "@/config/setting";
+import { Message } from "element-ui";
 
 export default function request(config) {
     const instance = new axios.create({
-        baseURL: 'http://127.0.0.1:8888/api/private/v1/',
+        baseURL: setting.baseUrl,
         timeout: 50000
     })
 
     instance.interceptors.request.use(config => {
+        config.headers.Authorization = window.sessionStorage.getItem('token')
         return config
     }, error => {
         console.log(error)
     })
+
     instance.interceptors.response.use(res => {
-        return res.data
+        const { status, msg } = res.data.meta
+        // console.log(res)
+        if ([200, 201, 204].includes(status)) {
+            return res.data
+        } else {
+            Message({
+                // type: 'error',
+                message: msg
+            })
+        }
     },error => {
         console.log(error)
     })
