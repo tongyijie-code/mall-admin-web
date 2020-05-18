@@ -67,7 +67,7 @@
                         <el-button type="danger" icon="el-icon-delete" size="small" @click="removeUserById(scope.row.id)"></el-button>
                         <!-- 设置-->
                         <el-tooltip content="分配角色" placement="top" effect="dark" :enterable="false">
-                            <el-button type="warning" icon="el-icon-setting" size="small"></el-button>
+                            <el-button type="warning" icon="el-icon-setting" size="small" @click="setRole(scope.row)"></el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -129,11 +129,34 @@
                 <el-button type="primary" @click="editUserInfo">确 定</el-button>
              </span>
         </el-dialog>
+        <!--分配角色对话框-->
+        <el-dialog
+                title="分配角色"
+                :visible.sync="roleDialogVisible"
+                width="50%" @close="setRoleDialogClose">
+            <div>
+                <p class="userInfo">当前的用户：{{userInfo.username}}</p>
+                <p class="userInfo">当前的角色：{{userInfo['role_name']}}</p>
+                <el-select v-model="selectedRoleId" placeholder="请选择">
+                    <el-option
+                            v-for="item in rolesList"
+                            :key="item.id"
+                            :label="item.roleName"
+                            :value="item.id">
+                    </el-option>
+                </el-select>
+            </div>
+            <span slot="footer" class="dialog-footer">
+    <el-button @click="roleDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
+  </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-    import { getUserList, changeStatus, addUserInfo, getUserById, commitEdit, removeUser } from '@/api/user'
+    import { getUserList, changeStatus, addUserInfo, getUserById, commitEdit, removeUser, setUserRole } from '@/api/user'
+    import { getRolesListData } from '@/api/rights'
     import { isEmail, isMobile } from '@/utils/validator'
     export default {
         name: "UserList",
@@ -181,7 +204,13 @@
                 },
                 editDialogVisible: false,
                 //用户信息
-                editForm: {}
+                editForm: {},
+                //角色对话框显示
+                roleDialogVisible: false,
+                userInfo: '',
+                rolesList: [],
+                //被选中的角色id
+                selectedRoleId: ''
             }
         },
         created() {
@@ -191,9 +220,8 @@
             _getUserList() {
                 getUserList(this.queryInfo).then(res => {
                     // console.log(res)
-                    const {data} = res
-                    this.userlist = data.users
-                    this.total = data.total
+                    this.userlist = res.data.users
+                    this.total = res.data.total
                 })
             },
             //监听pagesize改变，调用接口
@@ -280,11 +308,49 @@
                         message: '已取消删除'
                     });
                 });
+            },
+            //分配角色
+            setRole(role) {
+                this.roleDialogVisible = true
+                this.userInfo = role
+                console.log(role)
+                //获取角色信息
+                getRolesListData().then( res => {
+                    this.rolesList = res.data
+                    // console.log(res.data)
+                })
+
+            },
+            //点击确定按钮分配角色
+            saveRoleInfo() {
+                //判断是否选中，选中进行保存，没选中就提示
+                if (!this.selectedRoleId) {
+                    return this.$message.error('请选择角色')
+                }
+                setUserRole(this.userInfo.id, this.selectedRoleId).then(res => {
+                    console.log(res)
+                    this.$message.success('分配角色成功')
+                    //重新展示
+                    this._getUserList()
+                    this.roleDialogVisible = false
+                })
+
+
+            },
+             //  关闭对话框重置
+            setRoleDialogClose() {
+                this.userInfo.id = ''
+                this.selectedRoleId = ''
             }
+
         }
     }
 </script>
 
 <style scoped>
-
+.userInfo {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 10px;
+}
 </style>

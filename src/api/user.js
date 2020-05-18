@@ -60,11 +60,21 @@ export function commitEdit(id, data) {
         data
     })
 }
-
+//删除用户
 export function removeUser(id) {
     return request({
         url: 'users/'+ id,
         method: 'delete'
+    })
+}
+//分配用户角色
+export function setUserRole(id, Rid) {
+    return request({
+        url: 'users/'+ id + '/role',
+        method: 'put',
+        data: {
+            rid: Rid
+        }
     })
 }
 // export function queryUserById(userId) {
