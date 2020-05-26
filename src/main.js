@@ -5,6 +5,9 @@ import store from './store'
 
 import '@/assets/css/global.css'
 import './libs/element'
+//安装树状表格插件
+import TreeTable from 'vue-table-with-tree-grid'
+Vue.component('tree-table', TreeTable)
 
 //请求数据,两种方法
 import axios from 'axios'

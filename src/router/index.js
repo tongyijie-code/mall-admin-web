@@ -22,6 +22,7 @@ Vue.use(VueRouter)
         {path: '/users', component: () => import('@/components/user/UserList')},
         {path: '/roles', component: () => import('@/components/roles/Roles')},
         {path: '/rights', component: () => import('@/components/rights/Rights')},
+        {path: '/categories', component: () => import('@/components/goods/Cate')},
       ]
     },
 ]
