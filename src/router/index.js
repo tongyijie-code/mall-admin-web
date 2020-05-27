@@ -23,6 +23,9 @@ Vue.use(VueRouter)
         {path: '/roles', component: () => import('@/components/roles/Roles')},
         {path: '/rights', component: () => import('@/components/rights/Rights')},
         {path: '/categories', component: () => import('@/components/goods/Cate')},
+        {path: '/params', component: () => import('@/components/params/Params')},
+        {path: '/goods', component: () => import('@/components/goods/GoodsList')},
+        {path: '/orders', component: () => import('@/components/order/Order')}
       ]
     },
 ]

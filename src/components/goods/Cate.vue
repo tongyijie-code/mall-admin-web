@@ -77,7 +77,7 @@
 </template>
 
 <script>
-    import { getCateDate, addCate} from "../../api/cate";
+    import { getCateDate, addCateItem} from "../../api/cate";
 
     export default {
         name: "Cate.vue",
@@ -118,7 +118,7 @@
                 addCateForm: {
                     cat_name: '',
                     //父级的id
-                    cat_id: 0,
+                    cat_pid: 0,
                     //当前分类的等级，默认0，0,1，
                     cat_level: 0,
                 },
@@ -179,13 +179,12 @@
                 // console.log(this.selectKeys)//选择的父级
                 if (this.selectKeys.length>0) {
                     //当前添加分类父级的id
-                    this.addCateForm.cat_id = this.selectKeys[this.selectKeys.length-1]
+                    this.addCateForm.cat_pid = this.selectKeys[this.selectKeys.length-1]
                     //当前添加分类的等级
                     this.addCateForm.cat_level = this.selectKeys.length
-                    return
                 }else {
                     // 如果没有选择父级，设置为默认值
-                    this.addCateForm.cat_id = 0
+                    this.addCateForm.cat_pid = 0
                     this.addCateForm.cat_level = 0
                 }
                 // console.log(this.addCateForm)
@@ -194,9 +193,10 @@
             addCateData() {
                 this.$refs.addCateFormRef.validate(valid => {
                     if (!valid) return
-                    addCate(this.addCateForm).then( res => {
+                    addCateItem(this.addCateForm).then( res => {
                         console.log(res)
                         this.getCateList()
+                        console.log(this.total)
                         this.addCateDialogVisible = false
                     })
                 })
