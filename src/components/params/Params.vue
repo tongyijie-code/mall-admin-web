@@ -424,7 +424,6 @@ export default {
 <style scoped lang="less">
 .el-card {
   width: 980px;
-  height: 800px;
 }
 .cat-opt {
   margin: 15px 0;

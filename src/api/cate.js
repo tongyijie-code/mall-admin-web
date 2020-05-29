@@ -15,6 +15,7 @@ export function addCateItem(data) {
         data
     })
 }
+// 获取分类的参数数据
 export function getCateAttr(id, params) {
     return request({
         url: 'categories/'+ id + '/attributes',
@@ -22,6 +23,7 @@ export function getCateAttr(id, params) {
         params
     })
 }
+// 提交参数
 export function submitParams(id, data) {
     return request({
         url: 'categories/'+ id +'/attributes',
@@ -55,6 +57,14 @@ export function editSubmitParams(id, attrId, data) {
     return request({
         url: 'categories/'+id+'/attributes/'+attrId,
         method: 'put',
+        data
+    })
+}
+// 添加商品
+export function addGoods(data) {
+    return request({
+        url: 'goods',
+        method: 'post',
         data
     })
 }

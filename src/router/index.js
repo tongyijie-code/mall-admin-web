@@ -25,7 +25,8 @@ Vue.use(VueRouter)
         {path: '/categories', component: () => import('@/components/goods/Cate')},
         {path: '/params', component: () => import('@/components/params/Params')},
         {path: '/goods', component: () => import('@/components/goods/GoodsList')},
-        {path: '/orders', component: () => import('@/components/order/Order')}
+        {path: '/orders', component: () => import('@/components/order/Order')},
+        {path: '/goods/add', component: ()=>import('@/components/goods/Add')}
       ]
     },
 ]
