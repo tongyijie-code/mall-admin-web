@@ -64,7 +64,7 @@
                         :options="parentCateList"
                         :props="cascaderProps"
                         @change="parentCateChange"
-                        clearable change-on-select>
+                        clearable>
                     </el-cascader>
                 </el-form-item>
             </el-form>
